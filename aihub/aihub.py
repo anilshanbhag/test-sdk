@@ -21,15 +21,17 @@ class AIHub:
       batch = self.api_instance.create_batch({'name': name, 'workspace_name': workspace_name})
       return batch
 
-    def add_file(self, batch_id, file_name, file):
-      self.api_instance.add_file_to_batch(batch_id, file_name, file.read())
+    def add_file(self, id, file_name, file):
+      self.api_instance.add_file_to_batch(id, file_name, file.read())
 
   class Conversations:
     def __init__(self, api_instance):
       self.api_instance = api_instance
 
-    def create(self, conversation_data):
-      response = self.api_instance.create_conversation(conversation_data)
+    # name = 'Sample Conversation', description = 'A brief description of the conversation topic', files = FILENAMES
+
+    def create(self, name, description=None, files=[]):
+      response = self.api_instance.create_conversation(name=name, description=description, files=files)
       return response
 
     def status(self, conversation_id):
@@ -69,13 +71,17 @@ class AIHub:
       job = self.api_instance.run_app(run_details)
       return job
 
-    def status(self, job_id):
-      status = self.api_instance.get_run_status(job_id)
+    def status(self, id):
+      status = self.api_instance.get_run_status(id)
       return status
 
     def list(self):
       # Implement based on your SDK capabilities
       pass
+
+    def results(self, id):
+      results = self.api_instance.get_run_results(id)
+      return results
 
   class Apps:
     def __init__(self, api_instance):
